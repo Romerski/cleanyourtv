@@ -29,7 +29,7 @@ Con Claude Code basta con abrir el repo y pedirle «aplica la configuración de 
 
 | Paso | Detalle |
 |---|---|
-| Backup | Lista de paquetes, `getprop`, settings global/secure/system, Home original, tamaño/densidad de pantalla. **No está en este repo** (lleva el número de serie de la TV y su dirección Bluetooth); se guarda aparte |
+| Backup | Lista de paquetes, `getprop`, settings global/secure/system, Home original, tamaño/densidad de pantalla. En `backup/`, **limpio**: número de serie, Bluetooth, `android_id`, IPs y demás identificadores tachados (`backup/README.md`) |
 | Debloat | 30 paquetes desactivados con `pm disable-user --user 0` (nada desinstalado), en 4 lotes: ver `debloat.txt` |
 | Salvapantallas | Ambient de Google (`dreamx`, con promos) cambiado a `com.android.dreams.basic/.Colors` |
 | Launcher | CleanYourTV v3.5 (`com.gathin.tvhome`) como Home; dock: TiviMate, Nuvio, SmartTube, S0undTV |
