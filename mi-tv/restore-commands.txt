@@ -1,0 +1,35 @@
+pm enable android.autoinstalls.config.google.gtvpai
+pm enable com.android.adservices.api
+pm enable com.android.federatedcompute.services
+pm enable com.android.ondevicepersonalization.services
+pm enable com.android.tv.feedbackconsent
+pm enable com.google.android.apps.tv.dreamx
+pm enable com.google.android.apps.tv.launcherx
+pm enable com.google.android.feedback
+pm enable com.google.android.katniss
+pm enable com.google.android.partnersetup
+pm enable com.google.android.play.games
+pm enable com.google.android.tungsten.setupwraith
+pm enable com.google.android.videos
+pm enable com.tcl.UpdatePeripheral
+pm enable com.tcl.channelplus
+pm enable com.tcl.dashboard
+pm enable com.tcl.esticker
+pm enable com.tcl.exhibit
+pm enable com.tcl.guard
+pm enable com.tcl.hearaid
+pm enable com.tcl.interactive
+pm enable com.tcl.logkit
+pm enable com.tcl.magiconnectfree
+pm enable com.tcl.messagebox
+pm enable com.tcl.ocean.instructions
+pm enable com.tcl.partnercustomizer
+pm enable com.tcl.repairguide
+pm enable com.tcl.t_solo
+pm enable com.tcl.tv.tclhome_passive
+pm enable com.tcl.waterfall.overseas
+cmd package set-home-activity --user 0 com.google.android.apps.tv.launcherx/.home.HomeActivity
+settings put global window_animation_scale 1.0
+settings put global transition_animation_scale 1.0
+settings delete global animator_duration_scale
+pm list packages -d

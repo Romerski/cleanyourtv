@@ -139,6 +139,7 @@ public class HomeKeyService extends AccessibilityService {
     public void onDestroy() {
         if (running == this) running = null;
         RemoteKeys.frontPackage = "";
+        RemoteKeys.frontActivity = "";
         RemoteKeys.release(this);
         stopWaitingForUnlock();
         if (screenOnReceiver != null) unregisterReceiver(screenOnReceiver);
@@ -328,6 +329,7 @@ public class HomeKeyService extends AccessibilityService {
                 ComponentName window = new ComponentName(event.getPackageName().toString(), event.getClassName().toString());
                 getPackageManager().getActivityInfo(window, 0);
                 RemoteKeys.frontPackage = window.getPackageName();
+                RemoteKeys.frontActivity = window.getClassName();
             } catch (PackageManager.NameNotFoundException notAnActivity) {
                 // a dialog, panel or overlay: the app under it is still in front
             }

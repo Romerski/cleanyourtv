@@ -1,0 +1,44 @@
+{
+  "background_color": "#000000",
+  "wallpaper": true,
+  "wallpaper_rotation_minutes": 15,
+  "wallpaper_order": "shuffle",
+  "wallpaper_captions": true,
+  "rows_below_dock": 0,
+  "dock_title": true,
+  "dock_glass": true,
+  "dock_opacity": 50,
+  "dock_even_padding": true,
+  "ambient_glow": false,
+  "icon_only_buttons": true,
+  "icon_only_inputs": true,
+  "home_idle_clock_minutes": 3,
+  "back_opens_clock": true,
+  "clock_wallpaper": true,
+  "clock_wallpaper_dim": 25,
+  "dock_apps": [
+    "ar.tvplayer.tv",
+    "com.nuvio.tv",
+    "org.smarttube.stable",
+    "com.s0und.s0undtv"
+  ],
+  "hidden_apps": [
+    "com.tcl.tv"
+  ],
+  "live_tv_package": "com.tcl.tv",
+  "settings_key_keycodes": [
+    83
+  ],
+  "settings_key_panel": true,
+  "volume_pauses_filter": true,
+  "app_keys": [
+    "4062:com.nuvio.tv",
+    "4099:com.amazon.amazonvideo.livingroom",
+    "190:org.smarttube.stable",
+    "4020:ar.tvplayer.tv",
+    "4001:com.tcl.tv",
+    "front:4001:guide:com.tcl.tv",
+    "178:inputs"
+  ],
+  "gamepad_passthrough": true
+}

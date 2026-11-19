@@ -182,6 +182,15 @@ final class RemoteKeys {
 
     /** The app in front, from HomeKeyService's window changes while app_keys has "front:" entries; "" otherwise. */
     static String frontPackage = "";
+    /** The activity class in front, tracked alongside frontPackage; "" otherwise. */
+    static String frontActivity = "";
+
+    /** True while that Live TV app's own program guide is the activity in front (its class names an EPG or guide). */
+    static boolean guideInFront(String guidePkg) {
+        if (guidePkg == null || !guidePkg.equals(frontPackage)) return false;
+        String cls = frontActivity.substring(frontActivity.lastIndexOf('.') + 1).toLowerCase(java.util.Locale.ROOT);
+        return cls.contains("epg") || cls.contains("guide");
+    }
 
     /** A tap's target for both helpers: its "front:" entry while the button's own app is in front, else the usual one. */
     static String tap(String target, String alt) {
@@ -428,6 +437,11 @@ final class RemoteKeys {
     static void launch(Context ctx, String pkg) {
         if (pkg == null || runAction(ctx, pkg)) return;
         if (INPUTS.equals(pkg)) {
+            // Already open: the same button closes it, as the guide does (TCL C89K).
+            if (MainActivity.inputsMenuOpen()) {
+                runAction(ctx, "back");
+                return;
+            }
             // This launcher's own Inputs menu, as InputsRequestActivity opens it: addressed to Home directly, so a
             // vendor input picker that also answers VIEW_INPUTS never turns it into a chooser.
             try {
@@ -439,6 +453,11 @@ final class RemoteKeys {
         }
         String guide = guidePackage(pkg);
         if (guide != null) {
+            // Already on that guide: the same button closes it, as the stock Google TV launcher did (TCL C89K).
+            if (guideInFront(guide)) {
+                runAction(ctx, "back");
+                return;
+            }
             // The program guide, asked for the way Android TV's Live TV apps take it: the programs directory.
             start(ctx, new Intent(Intent.ACTION_VIEW)
                     .setDataAndType(TvContract.Programs.CONTENT_URI, "vnd.android.cursor.dir/program")

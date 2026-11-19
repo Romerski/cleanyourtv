@@ -3413,6 +3413,15 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
     }
 
     /** Dropdown menu under the Inputs pill: HDMI ports (with connection state), AV and Live TV. */
+    /** The Inputs menu while it is on screen; null otherwise. Read by RemoteKeys on the helper's thread (main). */
+    private static PopupWindow inputsMenu;
+
+    /** True while the Inputs menu is open: the remote's Input button then closes it instead of opening it again. */
+    static boolean inputsMenuOpen() {
+        PopupWindow menu = inputsMenu;
+        return menu != null && menu.isShowing();
+    }
+
     private void showInputs() {
         // A configured source panel and no Live TV row to offer next to it: the panel is the whole menu.
         // The BYINTEK U4 needs this, as its TvInputManager lists three HDMI ports and an AV input it doesn't have.
@@ -3432,6 +3441,12 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
         // Compact: as wide as the Inputs pill (a touch wider so "HDMI 1" fits), hanging right below it.
         int width = Math.max(anchor.getWidth(), (int) (150 * density));
         final PopupWindow popup = glassPopup(panel, width);
+        // Remembered while open, so the remote's Input button closes it on a second press (TCL C89K).
+        inputsMenu = popup;
+        popup.setOnDismissListener(() -> {
+            if (openPopup == popup) openPopup = null;
+            if (inputsMenu == popup) inputsMenu = null;
+        });
 
         TvInputManager tim = (TvInputManager) getSystemService(TV_INPUT_SERVICE);
         // inputs_connected_only: ports without a connected device and the AV jacks fold behind a "More inputs" row.
@@ -3542,6 +3557,14 @@ public class MainActivity extends Activity implements AppAdapter.TileListener {
                 View row = addInputRow(rows, popup, hdmi ? R.drawable.ic_input : R.drawable.ic_av, label, state,
                         () -> openInput(id));
                 if (connectedOnly && InputFold.folds(hdmi, state)) fold(row, folded);
+            }
+            // AirPlay (TCL C89K): the receiver is a software TV input, not a passthrough port, so the loop above
+            // leaves it out. The TV's own source panel lists it, and the same channel URI opens its AirPlay screen.
+            for (TvInputInfo info : inputs) {
+                if (info.isPassthroughInput() || info.isHidden(this)) continue;
+                if (!info.getId().toLowerCase(Locale.ROOT).contains("airplay")) continue;
+                final String airplayId = info.getId();
+                addInputRow(rows, popup, R.drawable.ic_airplay, "AirPlay", -1, () -> openInput(airplayId));
             }
         }
         if (!folded.isEmpty()) {

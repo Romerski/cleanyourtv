@@ -1,0 +1,69 @@
+# TCL 75C89K, Spain (Smart TV Pro, device G08, product G08_4K_GB, MediaTek tcl9618)
+# Google TV 14, firmware UTT2.250416.001 AU02 - the same product and build as
+# examples/tcl-c89b-google-tv in CleanYourTV, which was the starting point.
+# On Ethernet, no saved Wi-Fi networks (so setupwraith owns no network).
+#
+# Apply:   tools\disable.ps1 -TvHost 192.168.100.150 <this file>
+# Undo:    tools\restore.ps1 -TvHost 192.168.100.150 <this file> -Stock com.google.android.apps.tv.launcherx
+# Everything is DISABLED (pm disable-user --user 0), never uninstalled.
+#
+# Owner's choices (2026-11-19):
+#   kept    Alexa (com.tcl.smartalexa + com.tcl.ttvs, which also holds the TCL firmware updater),
+#           Chromecast, AirPlay, Miracast, Netflix, Prime Video, Game Bar, YouTube Music,
+#           USB media player and gallery
+#   off     Google Assistant (katniss), everything else in the tested C89B list
+
+# --- Batch 1: TCL tracking, content, ads and promos
+com.tcl.logkit                         # log capture and upload
+com.tcl.magiconnectfree                # T-Cast phone app
+com.tcl.channelplus                    # TCL Live FAST channels
+com.tcl.tv.tclhome_passive             # pushes TCL content to the home screen at boot
+com.tcl.partnercustomizer              # TCL tweaks to Google TV home rows
+com.tcl.interactive                    # TCL TIAS background service
+com.tcl.messagebox                     # TCL push messages and promos
+com.tcl.waterfall.overseas             # TCL recommendation browser
+com.tcl.dashboard                      # "TCL HOME" panel
+com.tcl.exhibit                        # retail demo
+com.tcl.esticker                       # retail demo stickers
+
+# --- Batch 2: preloaded apps and services
+com.tcl.ocean.instructions             # e-manual
+com.tcl.repairguide
+com.tcl.guard                          # TCL "cleaner" / app manager
+com.tcl.UpdatePeripheral               # TCL soundbar firmware updates
+android.autoinstalls.config.google.gtvpai   # silently installs partner apps
+com.google.android.partnersetup        # partner attribution
+com.google.android.feedback
+com.android.tv.feedbackconsent
+com.google.android.play.games
+com.tcl.hearaid                        # hearing test
+com.tcl.t_solo                         # Bluetooth "listen alone"
+com.google.android.videos              # Google TV / Play Movies storefront
+
+# --- Batch 3: Android 14 ad services, Google Assistant, ambient screensaver
+com.android.adservices.api             # Privacy Sandbox
+com.android.federatedcompute.services
+com.android.ondevicepersonalization.services
+com.google.android.katniss             # Google Assistant voice (mic button) - owner uses Alexa instead
+com.google.android.apps.tv.dreamx      # ambient screensaver with promos; screensaver switched to Colors first
+
+# --- Batch 4: for the CleanYourTV launcher, after it is installed; setupwraith first
+com.google.android.tungsten.setupwraith   # setup wizard; claims Home once launcherx is off
+com.google.android.apps.tv.launcherx   # stock Google TV home
+
+# --- Kept on purpose (uncomment to disable)
+# com.tcl.ttvs                         # Alexa core (AlexaService), TCL firmware updater, but also Samba TV ACR + TCL BI analytics
+# com.tcl.smartalexa                   # Alexa
+# com.tcl.usercenter                   # TCL account, kept so Alexa linking keeps working
+# com.tcl.gamebar                      # game mode / VRR overlay
+# com.google.android.apps.mediashell   # Chromecast
+# com.tcl.airplay2                     # AirPlay, together with the next two lines
+# com.mediatek.AirplayAPK
+# com.mediatek.airplaydaemon
+# com.tcl.miracast                     # Miracast
+# com.tcl.ui_mediaCenter               # USB media player
+# com.tcl.gallery                      # USB photo gallery + TCL screensaver
+# com.netflix.ninja                    # Netflix, together with the next line
+# com.netflix.tokenmanager
+# com.amazon.amazonvideo.livingroom    # Prime Video
+# com.google.android.youtube.tvmusic   # YouTube Music
