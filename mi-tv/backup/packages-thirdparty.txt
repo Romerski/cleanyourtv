@@ -1,0 +1,17 @@
+package:org.smarttube.stable
+package:com.esaba.downloader
+package:ch.protonvpn.android
+package:com.stremio.one
+package:org.videolan.vlc
+package:com.google.android.videos
+package:org.xbmc.kodi
+package:com.s0und.s0undtv
+package:tv.twitch.android.app
+package:com.nathnetwork.avappnew
+package:com.wolf.google.lm
+package:com.lonelycatgames.Xplore
+package:dev.vodik7.tvquickactions
+package:com.limelight.noir
+package:ar.tvplayer.tv
+package:com.nuvio.tv
+package:com.spocky.projengmenu
