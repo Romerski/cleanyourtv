@@ -18,7 +18,7 @@
   "clock_wallpaper_dim": 25,
   "dock_apps": [
     "ar.tvplayer.tv",
-    "com.nuvio.tv",
+    "com.nuvio.app",
     "org.smarttube.stable",
     "com.s0und.s0undtv"
   ],
@@ -32,7 +32,7 @@
   "settings_key_panel": true,
   "volume_pauses_filter": true,
   "app_keys": [
-    "4062:com.nuvio.tv",
+    "4062:com.nuvio.app",
     "4099:com.amazon.amazonvideo.livingroom",
     "190:org.smarttube.stable",
     "4020:ar.tvplayer.tv",

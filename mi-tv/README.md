@@ -18,6 +18,8 @@ python -m venv tools\venv; tools\venv\Scripts\python.exe -m pip install -r tools
 $env:TV_HOST = '192.168.100.150'        # la IP de la TV; en la TV: Opciones de desarrollador > Depuración USB
 powershell -ExecutionPolicy Bypass -File tools\disable.ps1 mi-tv\debloat.txt
 powershell -ExecutionPolicy Bypass -File launcher\build-and-install.ps1 -StockLauncher none -HomeKeyService
+tools\venv\Scripts\python.exe -I tools\b64push.py mi-tv\rog-ally\rog-ally.apk /data/local/tmp/rogally.apk
+tools\venv\Scripts\python.exe -I tools\tv.py 'pm install -r /data/local/tmp/rogally.apk; rm /data/local/tmp/rogally.apk'
 powershell -ExecutionPolicy Bypass -File tools\theme.ps1 mi-tv\mi-tema
 ```
 
@@ -32,7 +34,7 @@ Con Claude Code basta con abrir el repo y pedirle «aplica la configuración de 
 | Backup | Lista de paquetes, `getprop`, settings global/secure/system, Home original, tamaño/densidad de pantalla. En `backup/`, **limpio**: número de serie, Bluetooth, `android_id`, IPs y demás identificadores tachados (`backup/README.md`) |
 | Debloat | 30 paquetes desactivados con `pm disable-user --user 0` (nada desinstalado), en 4 lotes: ver `debloat.txt` |
 | Salvapantallas | Ambient de Google (`dreamx`, con promos) cambiado a `com.android.dreams.basic/.Colors` |
-| Launcher | CleanYourTV v3.5 (`com.gathin.tvhome`) como Home; dock: TiviMate, Nuvio, SmartTube, S0undTV |
+| Launcher | CleanYourTV v3.5 (`com.gathin.tvhome`) como Home; dock: TiviMate, Nuvio, SmartTube, S0undTV, Prime Video, ROG Ally |
 | Botones | Helper `HomeKeyService`: Netflix → Nuvio, Prime Video → Prime Video, YouTube → SmartTube, TCL Channel → TiviMate, engranaje → panel de ajustes; `volume_pauses_filter` activo |
 | DNS | DNS privado `dns.adguard-dns.com` (bloquea anuncios y rastreadores en todo el sistema; no los de YouTube) |
 
@@ -53,7 +55,7 @@ desde el menú de la TV: Ajustes → Privacidad (o Sistema → Privacidad), opci
 
 | Qué | Detalle |
 |---|---|
-| Tema | `mi-tema/`: el tema `ambient-glass` del repo (8 paisajes alpinos y de desierto que cambian cada 5 min, con su pie de foto; dock de cristal esmerilado, botones solo con icono) con 5 columnas y 5 apps en el dock (TiviMate, Nuvio, SmartTube, S0undTV, Prime Video), más Live TV y tus botones. `advanced_effects` activo: el icono enfocado se amplía un poco más (1,12× en vez de 1,10×), se eleva con sombra y su imagen hace zoom. Créditos de las fotos (licencia Unsplash) en `mi-tema/CREDITS.md` |
+| Tema | `mi-tema/`: el tema `ambient-glass` del repo (8 paisajes alpinos y de desierto que cambian cada 5 min, con su pie de foto; dock de cristal esmerilado, botones solo con icono) con 6 columnas y 6 apps en el dock (TiviMate, Nuvio, SmartTube, S0undTV, Prime Video, ROG Ally), más Live TV y tus botones. `advanced_effects` activo: el icono enfocado se amplía un poco más (1,12× en vez de 1,10×), se eleva con sombra y su imagen hace zoom. Créditos de las fotos (licencia Unsplash) en `mi-tema/CREDITS.md` |
 | Tema anterior | `mi-tema-aerial/`: el tema aerial (fotos de la ISS) con los mismos botones; para volver a él, envía esa carpeta con `theme.ps1` |
 | Salvapantallas | El reloj del launcher (`com.gathin.tvhome/.ClockDream`), sobre el fondo del tema |
 | Mandos de juego | `gamepad_passthrough`: con un mando conectado (Moonlight), el helper deja pasar todos sus botones; los atajos del mando de la TV no funcionan hasta que lo desconectes |
@@ -75,7 +77,7 @@ Keycodes de este mando (leídos del log `InputReader: TIDD`):
 
 | Botón | keycode | scancode | Ahora abre |
 |---|---|---|---|
-| Netflix | 4062 | 566 | Nuvio |
+| Netflix | 4062 | 566 | Nuvio (`com.nuvio.app`; antes de una reinstalación era `com.nuvio.tv`) |
 | Prime Video | 4099 | 752 | Prime Video |
 | YouTube | 190 | 569 | SmartTube |
 | TCL Channel | 4020 | | TiviMate |
@@ -105,6 +107,28 @@ En este fork los tres cambios ya están en el código de `launcher/`, y `cleanyo
 y habrá que resolverlo a mano. `cambios-launcher.patch` es el mismo cambio en un solo fichero, para aplicarlo
 (`git apply`) sobre una copia limpia del repo original. Sin estos cambios todo lo demás funciona; solo faltan la fila
 de AirPlay y que los botones TV y Entradas cierren lo que abrieron (Atrás lo cierra igual).
+
+### Ficha «ROG Ally» (`rog-ally/`)
+
+Mini-app propia (`io.github.romerski.rogally`, 72 KB, sin permisos) que aparece en el dock con un icono dibujado para
+ella (`draw_icon.py`; no es el logo de ROG). No tiene pantalla: al abrirla cambia la TV a la entrada HDMI de la Ally,
+en este orden:
+
+1. una entrada con «Ally» en el nombre: el nombre HDMI-CEC del aparato («ASUS ROG Ally») o el que le pongas a su
+   puerto en Ajustes > Entradas. La dock no siempre se anuncia por CEC, así que no se puede contar solo con esto;
+2. si no, el único puerto HDMI con algo encendido detrás (TCL marca los vacíos como «en espera»), así que sigue al
+   cable si lo cambias de puerto mientras la Ally sea el único aparato HDMI;
+3. si no, el último puerto donde la encontró y, la primera vez, el HDMI 2.
+
+Probado el 21-11-2026: la ficha abre el HDMI 2 con la imagen de la Ally.
+
+**Cambio automático al despertar la Ally: no es posible tal como está.** Probado el 21-11-2026: al despertarla con su
+mando, la dock no manda ningún mensaje HDMI-CEC (el historial CEC de la TV está vacío) y el HDMI 2 sigue en estado
+«conectado» también con la Ally en reposo, así que la TV no tiene nada que detectar. Si algún día la Ally o su dock
+empiezan a mandar CEC (*One Touch Play*), la TV podría cambiar sola.
+
+Recompilar: `cd mi-tv\rog-ally; .\gradlew.bat assembleRelease` (JDK 17 y SDK 34, como el launcher) e instalar
+`app\build\outputs\apk\release\app-release.apk` como en «Este repo». `rog-ally.apk` es esa misma build.
 
 ### Tarjeta del tiempo (Weather)
 

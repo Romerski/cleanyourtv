@@ -19,7 +19,7 @@
     <!-- Apps pinned to the dock row at the bottom, in this order. Missing apps are skipped. -->
     <string-array name="dock_apps">
         <item>ar.tvplayer.tv</item>
-        <item>com.nuvio.tv</item>
+        <item>com.nuvio.app</item>
         <item>org.smarttube.stable</item>
         <item>com.s0und.s0undtv</item>
     </string-array>
@@ -247,7 +247,7 @@
          where the firmware hands KEYCODE_GUIDE (172) to the stock launcher and no app ever receives it. Leave empty
          to omit. -->
     <string-array name="app_keys" translatable="false">
-        <item>4062:com.nuvio.tv</item>
+        <item>4062:com.nuvio.app</item>
         <item>4099:com.amazon.amazonvideo.livingroom</item>
         <item>190:org.smarttube.stable</item>
         <item>4020:ar.tvplayer.tv</item>

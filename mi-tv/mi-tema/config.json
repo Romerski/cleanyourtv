@@ -1,13 +1,14 @@
 {
   "dock_apps": [
     "ar.tvplayer.tv",
-    "com.nuvio.tv",
+    "com.nuvio.app",
     "org.smarttube.stable",
     "com.s0und.s0undtv",
-    "com.amazon.amazonvideo.livingroom"
+    "com.amazon.amazonvideo.livingroom",
+    "io.github.romerski.rogally"
   ],
   "fill_dock": true,
-  "columns": 5,
+  "columns": 6,
   "rows_below_dock": 0,
   "single_row": false,
   "background_color": "#05070C",
@@ -40,7 +41,7 @@
   "settings_key_panel": true,
   "volume_pauses_filter": true,
   "app_keys": [
-    "4062:com.nuvio.tv",
+    "4062:com.nuvio.app",
     "4099:com.amazon.amazonvideo.livingroom",
     "190:org.smarttube.stable",
     "4020:ar.tvplayer.tv",
